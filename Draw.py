@@ -39,10 +39,10 @@ def pdf(info):
     # create a new PDF with Reportlab
     can = canvas.Canvas(packet, pagesize=A4)
     
-    #Itreative section
+    #Itreative section, Here is where the magic occurs, abstractly.
     
     for detail in info:
-        paint(can, n_loc, n_size, n_font, detail[0])
+        paint(can, n_loc, n_size, n_font, detail[0]) 
     #Itreative portion ends
     
     class temp_pdf():

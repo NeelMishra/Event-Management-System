@@ -1,5 +1,8 @@
 import sys
 
+
+from Draw import pdf
+from excel import return_excel_info
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 from PyQt5.QtGui import QPixmap
