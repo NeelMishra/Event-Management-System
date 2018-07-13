@@ -1,2 +1,4 @@
 PyQt5
 PyPdf2
+reportlab 5.1.0
+openpyxl
