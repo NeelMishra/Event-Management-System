@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>Icons/add_certificate.png</file>
+    <file>Icons/Setting_button.png</file>
+    <file>Icons/font_icon.png</file>
+    <file>Icons/go_button.png</file>
+    <file>Icons/preview_certificate.png</file>
+    <file>Icons/add_excel.png</file>
+  </qresource>
+</RCC>
