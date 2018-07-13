@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Event Management System</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -27,6 +27,9 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="layout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="Image">
         <property name="sizePolicy">
@@ -44,7 +47,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
    <property name="minimumSize">
     <size>
@@ -74,6 +76,7 @@
    <addaction name="generate_pdf_button"/>
    <addaction name="separator"/>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <action name="add_excel_button">
    <property name="icon">
     <iconset>
