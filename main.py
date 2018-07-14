@@ -15,6 +15,7 @@ class Window(QMainWindow):
     design_path = ''
     design_pix_map = None
     font_style = None
+    extracted_excel_data = None
     
     def __init__(self):
 
@@ -25,6 +26,7 @@ class Window(QMainWindow):
         self.add_excel_button.triggered.connect(self.excel_file_browse)
         self.add_design_button.triggered.connect(self.design_path_browse)
         self.set_font_button.triggered.connect(self.select_font)
+        self.generate_pdf_button.triggered.connect(self.generate_pdf)
 
 
     def excel_file_browse(self):
@@ -34,7 +36,7 @@ class Window(QMainWindow):
         if(self.excel_path == None):
             return
 
-        self.excel_file = open(self.excel_path, 'r')
+        self.extracted_excel_data = return_excel_info(self.excel_path)
 
 
 
@@ -54,6 +56,10 @@ class Window(QMainWindow):
     def select_font(self):
             
         self.font_style, valid = QFontDialog.getFont()
+
+    def generate_pdf(self):
+        pass
+        #pdf(self.extracted_excel_data)
 
         
         
