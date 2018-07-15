@@ -1,36 +1,35 @@
 
+from PyQt5.QtGui import QFontMetrics
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter,A4
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import pdb
 
-def pdf(text, coordinate, pdf_name):
-
-    
-    w,h = A4
-    
-    n_loc = (175, 423)
-    n_size = 36
-    n_font = 'Courier'
-    
-    d_loc = (120, 311.5)
-    d_size = None
-    d_font = 'Courier'
-    
-    e_loc = (120, 282)
-    e_size = None
-    e_font = 'Courier'
-    
-    s_loc = (w,2)
-    s_size = None
-    s_font = 'Courier'
-    
-    
-    
-    def paint(canvas, location , size, font, text):
+def paint(canvas, location , size, font, text):
+    try:
         canvas.setFont(font, size)
         canvas.drawString(location[0],location[1], text)
         canvas.showPage()
+    except Exception as e:
+        print(e)
+
+def pdf(text, font, coordinate, pdf_name):
+
+##    pdb.set_trace()
+    w,h = A4
+    font_metrics = QFontMetrics(font)
+    n_loc = (coordinate[0], coordinate[1])
+    n_size = font_metrics.height()//2
+    n_font = font.family()
+
+    try:
+        pdfmetrics.registerFont(TTFont(n_font, n_font + ".ttf"))
+           
+    except:
+        pass
     
     existing_pdf = PdfFileReader(open(pdf_name, "rb"))
     
