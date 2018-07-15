@@ -1,16 +1,15 @@
 
-info = [["Neel Mishra"], ["IndarJeet Singh"],]
+from PyPDF2 import PdfFileWriter, PdfFileReader
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter,A4
 
-def pdf(info):
+def pdf(text, coordinate, pdf_name):
 
-    from PyPDF2 import PdfFileWriter, PdfFileReader
-    import io
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import letter,A4
     
     w,h = A4
     
-    n_loc = (430,342)
+    n_loc = (175, 423)
     n_size = 36
     n_font = 'Courier'
     
@@ -33,7 +32,7 @@ def pdf(info):
         canvas.drawString(location[0],location[1], text)
         canvas.showPage()
     
-    existing_pdf = PdfFileReader(open("design.pdf", "rb"))
+    existing_pdf = PdfFileReader(open(pdf_name, "rb"))
     
     packet = io.BytesIO()
     # create a new PDF with Reportlab
@@ -41,7 +40,7 @@ def pdf(info):
     
     #Itreative section, Here is where the magic occurs, abstractly.
     
-    for detail in info:
+    for detail in text:
         paint(can, n_loc, n_size, n_font, detail[0]) 
     #Itreative portion ends
     
