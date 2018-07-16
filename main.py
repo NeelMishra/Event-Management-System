@@ -1,10 +1,13 @@
 import sys
 
-from Draw import pdf
+from Draw import pdf, paint
 from excel import return_excel_info
+from image2pdf import convert
+
+
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFontMetrics
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QFontDialog
 from PyQt5 import QtCore
 class Window(QMainWindow):
@@ -16,6 +19,9 @@ class Window(QMainWindow):
     design_pix_map = None
     font_style = None
     extracted_excel_data = None
+    x = None
+    y = None
+    font_metrics = None
     
     def __init__(self):
 
@@ -32,13 +38,13 @@ class Window(QMainWindow):
     def getPos(self , event):
         try:
             if( int((event.pos().x()) * self.image_ratio[0] + 23) <1260):
-                 x = int((event.pos().x()) * self.image_ratio[0] + 3)
-                 y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-                 print(x,y)
+                 self.x = int((event.pos().x()) * self.image_ratio[0] + 3)
+                 self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
+                 print(self.x,self.y)
                  return
-            x = int((event.pos().x()) * self.image_ratio[0] + 23)
-            y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-            print(x,y)
+            self.x = int((event.pos().x()) * self.image_ratio[0] + 23)
+            self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
+            print(self.x,self.y)
         except Exception as e:
             print(e)
 
@@ -69,7 +75,7 @@ class Window(QMainWindow):
 
         try:
             self.image_ratio = [b/a for b,a in zip([2664, 1896],self.current_image_size)]
-
+            convert(self.design_path)
         except Exception as e:
             print(e)
         
@@ -79,12 +85,20 @@ class Window(QMainWindow):
         #print(A4)
 
     def select_font(self):
-            
-        self.font_style, valid = QFontDialog.getFont()
+        try:  
+            self.font_style, valid = QFontDialog.getFont()
+            #self.font_metrics = QFontMetrics(self.font_style)
+            #print(type(self.font_style.family()))
+        except Exception as e:
+            print(e)
 
     def generate_pdf(self):
-        pass
-        #pdf(self.extracted_excel_data)
+
+        try:
+            convert(self.design_path)
+            pdf(self.extracted_excel_data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf")
+        except Exception as e:
+            print(e)
 
         
         
