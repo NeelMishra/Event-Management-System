@@ -28,7 +28,9 @@ class Window(QMainWindow):
         super(Window, self).__init__()
         loadUi('Design.ui', self)
         self.show()
-
+        self.progress.hide()
+        #self.progress.setValue(20)
+        #self.progress.show()
         self.Image.mousePressEvent = self.getPos
         self.add_excel_button.triggered.connect(self.excel_file_browse)
         self.add_design_button.triggered.connect(self.design_path_browse)
@@ -56,7 +58,7 @@ class Window(QMainWindow):
         if(self.excel_path == None):
             return
 
-        self.extracted_excel_data = return_excel_info(self.excel_path)
+        self.extracted_excel_data = return_excel_info(self.excel_path)#Get excel data
 
 
 
@@ -85,8 +87,10 @@ class Window(QMainWindow):
         #print(A4)
 
     def select_font(self):
-        try:  
+        try:
             self.font_style, valid = QFontDialog.getFont()
+            print(self.font_style)
+            print(valid)
             #self.font_metrics = QFontMetrics(self.font_style)
             #print(type(self.font_style.family()))
         except Exception as e:
@@ -96,7 +100,7 @@ class Window(QMainWindow):
 
         try:
             convert(self.design_path)
-            pdf(self.extracted_excel_data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf")
+            pdf(self.extracted_excel_data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
         except Exception as e:
             print(e)
 

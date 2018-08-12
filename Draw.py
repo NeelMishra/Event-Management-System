@@ -16,8 +16,10 @@ def paint(canvas, location , size, font, text):
     except Exception as e:
         print(e)
 
-def pdf(text, font, coordinate, pdf_name):
-
+def pdf(text, font, coordinate, pdf_name,progress):
+    text = text[1:]
+    total_length = len(text)
+    print(total_length)
 ##    pdb.set_trace()
     w,h = A4
     font_metrics = QFontMetrics(font)
@@ -38,9 +40,20 @@ def pdf(text, font, coordinate, pdf_name):
     can = canvas.Canvas(packet, pagesize=A4)
     
     #Itreative section, Here is where the magic occurs, abstractly.
+
+    i = 0
     
     for detail in text:
-        paint(can, n_loc, n_size, n_font, detail[0]) 
+        i += 1
+        RATIO = i / total_length
+        print(i)
+        print(total_length)
+        print(RATIO)
+        paint(can, n_loc, n_size, n_font, detail[0]) #Print names
+        progress.show()
+        progress.setValue(int(RATIO * 100))
+
+    #progress.hide()
     #Itreative portion ends
     
     class temp_pdf():
