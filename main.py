@@ -31,6 +31,15 @@ class Window(QMainWindow):
         self.progress.hide()
         #self.progress.setValue(20)
         #self.progress.show()
+        #self.flag_spacer.changeSize(0)
+        self.red_pix_map = QPixmap("Icons/red.jpg")
+        self.green_pix_map = QPixmap("Icons/green.jpg")
+        print(self.green_pix_map)
+        self.design_signal.setPixmap(self.red_pix_map)
+        self.excel_signal.setPixmap(self.green_pix_map)
+        self.font_signal.setPixmap(self.red_pix_map)
+        self.fields_signal.setPixmap(self.green_pix_map)
+        
         self.Image.mousePressEvent = self.getPos
         self.add_excel_button.triggered.connect(self.excel_file_browse)
         self.add_design_button.triggered.connect(self.design_path_browse)
