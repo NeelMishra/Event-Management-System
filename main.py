@@ -29,7 +29,7 @@ class Window(QMainWindow):
 
         ##Setting up appropriate flags for different fields
         ##  that will be inserted by user.
-        self.flags = []
+        self.fields = {}
 
 
 
@@ -57,7 +57,11 @@ class Window(QMainWindow):
         self.set_font_button.triggered.connect(self.select_font)
         self.generate_pdf_button.triggered.connect(self.generate_pdf)
         self.preview_certificate_button.triggered.connect(self.preview_pdf)
+        self.setting_button.triggered.connect(self.dropdown)
 
+
+    def dropdown(self):
+        pass
 
 
     def getPos(self , event):
