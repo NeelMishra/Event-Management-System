@@ -1,4 +1,5 @@
 import sys
+import os
 
 from Draw import pdf, paint
 from excel import return_excel_info
@@ -25,6 +26,14 @@ class Window(QMainWindow):
     
     def __init__(self):
 
+
+        ##Setting up appropriate flags for different fields
+        ##  that will be inserted by user.
+        self.flags = []
+
+
+
+        #initializing different GUI elements!
         super(Window, self).__init__()
         loadUi('Design.ui', self)
         self.show()
@@ -39,12 +48,17 @@ class Window(QMainWindow):
         self.excel_signal.setPixmap(self.green_pix_map)
         self.font_signal.setPixmap(self.red_pix_map)
         self.fields_signal.setPixmap(self.green_pix_map)
+
+
         
         self.Image.mousePressEvent = self.getPos
         self.add_excel_button.triggered.connect(self.excel_file_browse)
         self.add_design_button.triggered.connect(self.design_path_browse)
         self.set_font_button.triggered.connect(self.select_font)
         self.generate_pdf_button.triggered.connect(self.generate_pdf)
+        self.preview_certificate_button.triggered.connect(self.preview_pdf)
+
+
 
     def getPos(self , event):
         try:
@@ -113,6 +127,19 @@ class Window(QMainWindow):
         except Exception as e:
             print(e)
 
+        os.startfile('destination.pdf')
+
+    def preview_pdf(self):
+
+        data = ['Test','Test',]
+
+        try:
+            convert(self.design_path)
+            pdf(data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
+        except Exception as e:
+            print(e)
+
+        os.startfile('destination.pdf')
         
         
 app = QApplication(sys.argv)
