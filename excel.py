@@ -40,4 +40,4 @@ def return_excel_info(workbook_name):
         row += 1
         cell = 'A' + str(row+1) 
 
-    return return_list
+    return return_list, return_list[0]

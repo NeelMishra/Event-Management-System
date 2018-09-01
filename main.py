@@ -29,7 +29,10 @@ class Window(QMainWindow):
 
         ##Setting up appropriate flags for different fields
         ##  that will be inserted by user.
-        self.fields = {}
+        self.fields = {1 : 'name',}
+        self.combo=QtGui.QComboBox()
+        mytoolbar.addWidget(self.combo)
+        self.combo.insertItems(1,["One","Two","Three"])
 
 
 
@@ -61,7 +64,9 @@ class Window(QMainWindow):
 
 
     def dropdown(self):
-        pass
+        name = some_function()
+        self.fields[len(self.fields) + 1] = name
+        field_pointer = len(self.fields) + 1
 
 
     def getPos(self , event):
