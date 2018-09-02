@@ -9,8 +9,23 @@ from image2pdf import convert
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 from PyQt5.QtGui import QPixmap, QFontMetrics
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QFontDialog
+from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog, QFontDialog
 from PyQt5 import QtCore
+
+class FontBox(QDialog):
+
+
+    def __init__(self,justForFun):
+        super(FontBox, self).__init__()
+        loadUi('blah.ui', self)
+        print(justForFun)
+
+    def __del__(self):
+        del(self)
+    
+
+
+
 class Window(QMainWindow):
     image_ratio = None
     current_image_size = None
@@ -23,16 +38,17 @@ class Window(QMainWindow):
     x = None
     y = None
     font_metrics = None
+    #Heading of the excel sheet are used as fields
+    #A dictionary is created, which has keys as the heading of excel
+    #The value is the location, font_size, color, etc as an entire dictionary.
+    fields = {}
+    
     
     def __init__(self):
 
 
         ##Setting up appropriate flags for different fields
         ##  that will be inserted by user.
-        self.fields = {1 : 'name',}
-        self.combo=QtGui.QComboBox()
-        mytoolbar.addWidget(self.combo)
-        self.combo.insertItems(1,["One","Two","Three"])
 
 
 
@@ -44,6 +60,11 @@ class Window(QMainWindow):
         #self.progress.setValue(20)
         #self.progress.show()
         #self.flag_spacer.changeSize(0)
+
+        
+
+
+        
         self.red_pix_map = QPixmap("Icons/red.jpg")
         self.green_pix_map = QPixmap("Icons/green.jpg")
         print(self.green_pix_map)
@@ -64,10 +85,8 @@ class Window(QMainWindow):
 
 
     def dropdown(self):
-        name = some_function()
-        self.fields[len(self.fields) + 1] = name
-        field_pointer = len(self.fields) + 1
-
+        self.dialog = FontBox("Neel Mishra")
+        self.dialog.show()
 
     def getPos(self , event):
         try:
@@ -90,8 +109,14 @@ class Window(QMainWindow):
         if(self.excel_path == None):
             return
 
-        self.extracted_excel_data = return_excel_info(self.excel_path)#Get excel data
+        self.extracted_excel_data, self.headings = return_excel_info(self.excel_path)#Get excel data
 
+        for heading in self.headings:
+            fields[heading] = {'coordinates' : None,
+                               'font_color' : None,
+                               'font_size' : None,
+                               'font_family' : None,
+                               }
 
 
     def design_path_browse(self):
