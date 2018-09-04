@@ -16,17 +16,13 @@ def paint(canvas, location , size, font, text):
     except Exception as e:
         print(e)
 
-def pdf(text, font, coordinate, pdf_name,progress):
-    text = text[1:]
-    total_length = len(text)
-    print(total_length)
+def pdf(fields, pdf_name):#,progress):
+##    text = text[1:]
+##    total_length = len(text)
+##    print(total_length)
 ##    pdb.set_trace()
+   ## n_font = font.family()
     w,h = A4
-    font_metrics = QFontMetrics(font)
-    n_loc = (coordinate[0], coordinate[1])
-    n_size = font_metrics.height()//2
-    n_font = font.family()
-
     try:
         pdfmetrics.registerFont(TTFont(n_font, n_font + ".ttf"))
            
@@ -42,20 +38,32 @@ def pdf(text, font, coordinate, pdf_name,progress):
     #Itreative section, Here is where the magic occurs, abstractly.
 
     i = 0
-    
-    for detail in text:
-        i += 1
-        RATIO = i / total_length
-        print(i)
-        print(total_length)
-        print(RATIO)
-        paint(can, n_loc, n_size, n_font, detail[0]) #Print names
-        progress.show()
-        progress.setValue(int(RATIO * 100))
 
-    #progress.hide()
-    #Itreative portion ends
+    for heading in fields:
+        
+        n_loc = fields[heading]['coordinates']
+        n_size = fields[heading]['font_size']
+        n_font = fields[heading]['font_family']
+        n_color = fields[heading]['font_color']
+
+        i += 1
+        #RATIO = i / total_length
+        #print(i)
+        ##print(total_length)
+        ##print(RATIO)
+
+        for value in fields[heading]['content']:
+            print(value)
+            paint(can, n_loc, n_size, n_font, value) #Print names
+
+
+        #progress.show()
+        #progress.setValue(int(RATIO * 100))
     
+
+#progress.hide()
+#Itreative portion ends
+
     class temp_pdf():
         
         def get_page(self,page_no):
@@ -75,10 +83,12 @@ def pdf(text, font, coordinate, pdf_name,progress):
             self.output = PdfFileWriter()
             self.output.addBlankPage(h,w)
             self.output.write(self.outputStream)
-            
+
     
+    
+
     can.save()
-    
+
     #move to the beginning of the StringIO buffer
     packet.seek(0)
     new_pdf = PdfFileReader(packet)

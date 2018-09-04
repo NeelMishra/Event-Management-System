@@ -13,16 +13,43 @@ from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog, QFo
 from PyQt5 import QtCore
 
 class FontBox(QDialog):
-
-
-    def __init__(self,justForFun):
+    def __init__(self,dictionary, flag):
         super(FontBox, self).__init__()
+        if(len(dictionary) == 0):
+                from PyQt5.QtWidgets import QMessageBox
+                self.close()
+                QMessageBox.about(self, "Excel file not set!", "Please set an excel file path, via the excel button.")
+                self.close()
+                return
+        
+        print("Execution is here!")
         loadUi('blah.ui', self)
-        print(justForFun)
+        self.ok_button.clicked.connect(self.button_click)
+        self.cancel_button.clicked.connect(self.closing_logic)
+        self.show()
 
-    def __del__(self):
-        del(self)
-    
+    def closing_logic(self):
+        self.close()
+
+    def button_click(self):
+        try:
+            print(len(self.dictionary))
+            
+            
+            flag = self.pointer.currentText()
+            r = self.R.text()
+            g = self.G.text()
+            b = self.B.text()
+            dictionary[flag][font_size] = self.size.text()
+            dictionary[flag][font_color] = (r,g,b)
+            dictionary[flag][font_family] = self.font.currentText()
+            print(dictionary)
+            self.close()
+
+        except Exception as e:
+            print(e)
+        
+
 
 
 
@@ -42,6 +69,7 @@ class Window(QMainWindow):
     #A dictionary is created, which has keys as the heading of excel
     #The value is the location, font_size, color, etc as an entire dictionary.
     fields = {}
+    flag = None
     
     
     def __init__(self):
@@ -85,38 +113,58 @@ class Window(QMainWindow):
 
 
     def dropdown(self):
-        self.dialog = FontBox("Neel Mishra")
-        self.dialog.show()
+        try:
+            self.dialog = FontBox(self.fields,self.flag)
+            self.dialog.show()
+        except Exception as e:
+            print(e)
 
     def getPos(self , event):
         try:
+            #print(self.fields[self.flag])
             if( int((event.pos().x()) * self.image_ratio[0] + 23) <1260):
                  self.x = int((event.pos().x()) * self.image_ratio[0] + 3)
                  self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-                 print(self.x,self.y)
+                 self.fields[self.flag]['coordinates'] = (self.x, self.y)
+                 print(self.fields[self.flag]['coordinates'])
                  return
             self.x = int((event.pos().x()) * self.image_ratio[0] + 23)
             self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-            print(self.x,self.y)
+            self.fields[self.flag]['coordinates'] = (self.x, self.y)
+            print(self.fields[self.flag]['coordinates'])
         except Exception as e:
             print(e)
 
 
     def excel_file_browse(self):
+        try:
+            self.excel_path, _ = QFileDialog.getOpenFileName(self, 'Select excel path')
 
-        self.excel_path, _ = QFileDialog.getOpenFileName(self, 'Select excel path')
+            if(self.excel_path == None):
+                return
 
-        if(self.excel_path == None):
-            return
+            self.extracted_excel_data, self.headings = return_excel_info(self.excel_path)#Get excel data
+            #print(self.extracted_excel_data)
+            i = 0
+            for heading in self.headings:
+                
+                self.fields[heading] = {'coordinates' : None,
+                                   'font_color' : None,
+                                   'font_size' : None,
+                                   'font_family' : None,
+                                   }
 
-        self.extracted_excel_data, self.headings = return_excel_info(self.excel_path)#Get excel data
-
-        for heading in self.headings:
-            fields[heading] = {'coordinates' : None,
-                               'font_color' : None,
-                               'font_size' : None,
-                               'font_family' : None,
-                               }
+                temp_list = []
+                for values in self.extracted_excel_data[1:]:
+                    temp_list.append(values[i])
+                self.fields[heading]['content'] = temp_list
+                i += 1
+                
+            self.flag = list(self.fields.keys())[0]
+            print(self.fields)
+        except Exception as e:
+            print(e)
+            
 
 
     def design_path_browse(self):
@@ -157,7 +205,7 @@ class Window(QMainWindow):
 
         try:
             convert(self.design_path)
-            pdf(self.extracted_excel_data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
+            pdf(fields,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
         except Exception as e:
             print(e)
 
