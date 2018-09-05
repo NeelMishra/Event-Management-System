@@ -10,11 +10,12 @@ import pdb
 
 def paint(canvas, location , size, font, text):
     try:
-        canvas.setFont(font, size)
-        canvas.drawString(location[0],location[1], text)
+        pdfmetrics.registerFont(TTFont(font, font + ".ttf"))
+        canvas.setFont(font, int(size))
+        canvas.drawString(int(location[0]),int(location[1]), text)
         canvas.showPage()
     except Exception as e:
-        print(e)
+        print("Exception from paint" , e)
 
 def pdf(fields, pdf_name):#,progress):
 ##    text = text[1:]
@@ -40,8 +41,11 @@ def pdf(fields, pdf_name):#,progress):
     i = 0
 
     for heading in fields:
+
         
         n_loc = fields[heading]['coordinates']
+        if(n_loc == None):
+            continue
         n_size = fields[heading]['font_size']
         n_font = fields[heading]['font_family']
         n_color = fields[heading]['font_color']

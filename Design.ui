@@ -358,7 +358,6 @@
    <addaction name="separator"/>
    <addaction name="add_excel_button"/>
    <addaction name="separator"/>
-   <addaction name="set_font_button"/>
    <addaction name="separator"/>
    <addaction name="setting_button"/>
    <addaction name="separator"/>
@@ -401,7 +400,7 @@
     <string>Generate Pdf</string>
    </property>
   </action>
-  <action name="set_font_button">
+  <action name="action">
    <property name="icon">
     <iconset>
      <normaloff>Icons/font_icon.png</normaloff>Icons/font_icon.png</iconset>

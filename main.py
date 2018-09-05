@@ -15,39 +15,33 @@ from PyQt5 import QtCore
 class FontBox(QDialog):
     def __init__(self,dictionary, flag):
         super(FontBox, self).__init__()
-        if(len(dictionary) == 0):
-                from PyQt5.QtWidgets import QMessageBox
-                self.close()
-                QMessageBox.about(self, "Excel file not set!", "Please set an excel file path, via the excel button.")
-                self.close()
-                return
-        
-        print("Execution is here!")
         loadUi('blah.ui', self)
-        self.ok_button.clicked.connect(self.button_click)
+        for header in dictionary.keys():
+            self.pointer.addItem(header)
+        #self.pointer.addItem(dictionary[
+        #print(flag)
+        self.ok_button.clicked.connect(lambda: self.button_click(dictionary,flag))
         self.cancel_button.clicked.connect(self.closing_logic)
         self.show()
 
     def closing_logic(self):
         self.close()
 
-    def button_click(self):
+    def button_click(self, dictionary, flag):
         try:
-            print(len(self.dictionary))
-            
-            
-            flag = self.pointer.currentText()
+            #print(flag)
+            flag[0] = self.pointer.currentText()
             r = self.R.text()
             g = self.G.text()
             b = self.B.text()
-            dictionary[flag][font_size] = self.size.text()
-            dictionary[flag][font_color] = (r,g,b)
-            dictionary[flag][font_family] = self.font.currentText()
-            print(dictionary)
+            dictionary[flag[0]]['font_size'] = self.size.text()
+            dictionary[flag[0]]['font_color'] = (r,g,b)
+            dictionary[flag[0]]['font_family'] = self.font.currentText()
+            print(flag)
             self.close()
 
         except Exception as e:
-            print(e)
+            print("Exception from button_click" + e)
         
 
 
@@ -69,7 +63,7 @@ class Window(QMainWindow):
     #A dictionary is created, which has keys as the heading of excel
     #The value is the location, font_size, color, etc as an entire dictionary.
     fields = {}
-    flag = None
+    flag = []
     
     
     def __init__(self):
@@ -106,7 +100,7 @@ class Window(QMainWindow):
         self.Image.mousePressEvent = self.getPos
         self.add_excel_button.triggered.connect(self.excel_file_browse)
         self.add_design_button.triggered.connect(self.design_path_browse)
-        self.set_font_button.triggered.connect(self.select_font)
+        #self.set_font_button.triggered.connect(self.select_font)
         self.generate_pdf_button.triggered.connect(self.generate_pdf)
         self.preview_certificate_button.triggered.connect(self.preview_pdf)
         self.setting_button.triggered.connect(self.dropdown)
@@ -114,10 +108,15 @@ class Window(QMainWindow):
 
     def dropdown(self):
         try:
+            if(len(self.fields) == 0):
+                from PyQt5.QtWidgets import QMessageBox
+                QMessageBox.about(self, "Excel file not set!", "Please set an excel file path, via the excel button.")
+                return
             self.dialog = FontBox(self.fields,self.flag)
             self.dialog.show()
+            print(self.flag)
         except Exception as e:
-            print(e)
+            print("exception from dropdown" ,e)
 
     def getPos(self , event):
         try:
@@ -125,15 +124,15 @@ class Window(QMainWindow):
             if( int((event.pos().x()) * self.image_ratio[0] + 23) <1260):
                  self.x = int((event.pos().x()) * self.image_ratio[0] + 3)
                  self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-                 self.fields[self.flag]['coordinates'] = (self.x, self.y)
-                 print(self.fields[self.flag]['coordinates'])
+                 self.fields[self.flag[0]]['coordinates'] = (self.x, self.y)
+                 print(self.fields[self.flag[0]]['coordinates'], self.flag, '\n', self.fields)
                  return
             self.x = int((event.pos().x()) * self.image_ratio[0] + 23)
             self.y = int((self.current_image_size[1] - event.pos().y()) * self.image_ratio[1] + 9)
-            self.fields[self.flag]['coordinates'] = (self.x, self.y)
-            print(self.fields[self.flag]['coordinates'])
+            self.fields[self.flag[0]]['coordinates'] = (self.x, self.y)
+            print(self.fields[self.flag[0]]['coordinates'], self.flag, '\n', self.fields)
         except Exception as e:
-            print(e)
+            print("Exception from getPos" ,e)
 
 
     def excel_file_browse(self):
@@ -160,10 +159,10 @@ class Window(QMainWindow):
                 self.fields[heading]['content'] = temp_list
                 i += 1
                 
-            self.flag = list(self.fields.keys())[0]
+            self.flag = [list(self.fields.keys())[0]]
             print(self.fields)
         except Exception as e:
-            print(e)
+            print("Exception from excel_file_browse", e)
             
 
 
@@ -184,7 +183,7 @@ class Window(QMainWindow):
             self.image_ratio = [b/a for b,a in zip([2664, 1896],self.current_image_size)]
             convert(self.design_path)
         except Exception as e:
-            print(e)
+            print("Exception from design_path_browse", e)
         
         print(str(self.design_pix_map.height())+ "  " + str(self.design_pix_map.width()) )
         #print(self.image_ratio)
@@ -199,15 +198,27 @@ class Window(QMainWindow):
             #self.font_metrics = QFontMetrics(self.font_style)
             #print(type(self.font_style.family()))
         except Exception as e:
-            print(e)
+            print("Exception from select_font[Important]")
 
     def generate_pdf(self):
 
-        try:
-            convert(self.design_path)
-            pdf(fields,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
-        except Exception as e:
-            print(e)
+        if(len(self.fields) == 0):
+            from PyQt5.QtWidgets import QMessageBox
+            QMessageBox.about(self, "Excel file not set!", "Please set an excel file path, via the excel button.")
+            return
+
+
+        if(len(self.design_path) == 0):
+            from PyQt5.QtWidgets import QMessageBox
+            QMessageBox.about(self, "Design not set!", "Please set a design image path, via the design button.")
+            return
+            
+            
+        #try:
+        convert(self.design_path)
+        pdf(self.fields,self.design_path[0:-4] + ".pdf",)# self.progress)
+        #except Exception as e:
+        #    print("Exception from generate_pdf", e)
 
         os.startfile('destination.pdf')
 
@@ -219,7 +230,7 @@ class Window(QMainWindow):
             convert(self.design_path)
             pdf(data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
         except Exception as e:
-            print(e)
+            print("Exception from preview_pdf", e)
 
         os.startfile('destination.pdf')
         
