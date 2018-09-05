@@ -13,21 +13,21 @@ from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog, QFo
 from PyQt5 import QtCore
 
 class FontBox(QDialog):
-    def __init__(self,dictionary, flag):
+    def __init__(self,parent,dictionary, flag):
         super(FontBox, self).__init__()
         loadUi('blah.ui', self)
         for header in dictionary.keys():
             self.pointer.addItem(header)
         #self.pointer.addItem(dictionary[
         #print(flag)
-        self.ok_button.clicked.connect(lambda: self.button_click(dictionary,flag))
+        self.ok_button.clicked.connect(lambda: self.button_click(parent,dictionary,flag))
         self.cancel_button.clicked.connect(self.closing_logic)
         self.show()
 
     def closing_logic(self):
         self.close()
 
-    def button_click(self, dictionary, flag):
+    def button_click(self,parent, dictionary, flag):
         try:
             #print(flag)
             flag[0] = self.pointer.currentText()
@@ -37,6 +37,8 @@ class FontBox(QDialog):
             dictionary[flag[0]]['font_size'] = self.size.text()
             dictionary[flag[0]]['font_color'] = (r,g,b)
             dictionary[flag[0]]['font_family'] = self.font.currentText()
+            
+            parent.font_signal.setPixmap(parent.green_pix_map)
             print(flag)
             self.close()
 
@@ -91,9 +93,10 @@ class Window(QMainWindow):
         self.green_pix_map = QPixmap("Icons/green.jpg")
         print(self.green_pix_map)
         self.design_signal.setPixmap(self.red_pix_map)
-        self.excel_signal.setPixmap(self.green_pix_map)
+        #self.design_signal.setPixmap(self.green_pix_map)
+        self.excel_signal.setPixmap(self.red_pix_map)
         self.font_signal.setPixmap(self.red_pix_map)
-        self.fields_signal.setPixmap(self.green_pix_map)
+        #self.fields_signal.setPixmap(self.red_pix_map)
 
 
         
@@ -102,19 +105,21 @@ class Window(QMainWindow):
         self.add_design_button.triggered.connect(self.design_path_browse)
         #self.set_font_button.triggered.connect(self.select_font)
         self.generate_pdf_button.triggered.connect(self.generate_pdf)
-        self.preview_certificate_button.triggered.connect(self.preview_pdf)
+        #self.preview_certificate_button.triggered.connect(self.preview_pdf)
         self.setting_button.triggered.connect(self.dropdown)
 
 
     def dropdown(self):
+        self.font_signal.setPixmap(self.red_pix_map)
         try:
             if(len(self.fields) == 0):
                 from PyQt5.QtWidgets import QMessageBox
                 QMessageBox.about(self, "Excel file not set!", "Please set an excel file path, via the excel button.")
                 return
-            self.dialog = FontBox(self.fields,self.flag)
+            self.dialog = FontBox(self,self.fields,self.flag)
             self.dialog.show()
             print(self.flag)
+            #self.font_signal.setPixmap(self.green_pix_map)
         except Exception as e:
             print("exception from dropdown" ,e)
 
@@ -136,6 +141,7 @@ class Window(QMainWindow):
 
 
     def excel_file_browse(self):
+        self.excel_signal.setPixmap(self.red_pix_map)
         try:
             self.excel_path, _ = QFileDialog.getOpenFileName(self, 'Select excel path')
 
@@ -160,14 +166,14 @@ class Window(QMainWindow):
                 i += 1
                 
             self.flag = [list(self.fields.keys())[0]]
-            print(self.fields)
+            self.excel_signal.setPixmap(self.green_pix_map)
         except Exception as e:
             print("Exception from excel_file_browse", e)
             
 
 
     def design_path_browse(self):
-
+        self.design_signal.setPixmap(self.red_pix_map)
         self.design_path, _ = QFileDialog.getOpenFileName(self, 'Select certificate design.')
 
         if(self.design_path == None):
@@ -182,6 +188,7 @@ class Window(QMainWindow):
         try:
             self.image_ratio = [b/a for b,a in zip([2664, 1896],self.current_image_size)]
             convert(self.design_path)
+            self.design_signal.setPixmap(self.green_pix_map)
         except Exception as e:
             print("Exception from design_path_browse", e)
         
@@ -214,27 +221,34 @@ class Window(QMainWindow):
             return
             
             
-        #try:
-        convert(self.design_path)
-        pdf(self.fields,self.design_path[0:-4] + ".pdf",)# self.progress)
-        #except Exception as e:
-        #    print("Exception from generate_pdf", e)
+        try:
+            convert(self.design_path)
+            pdf(self.fields,self.design_path[0:-4] + ".pdf",)# self.progress)
+        except Exception as e:
+            print("Exception from generate_pdf", e)
 
         os.startfile('destination.pdf')
 
     def preview_pdf(self):
 
-        data = ['Test','Test',]
+        self.data = {'name' : {'coordinates' : self.fields[self.flag]['coordinates'],
+                               'content' : ['Test'],
+                               'font_size' : self.fields[self.flag]['font_size'],
+                               'font_color' : self.fields[self.flag]['font_color'],
+                               'font_family' : self.fields[self.flag]['font_family'],
+                               }}
 
         try:
             convert(self.design_path)
-            pdf(data,self.font_style, [self.x,self.y], self.design_path[0:-4] + ".pdf", self.progress)
+            pdf(self.fields,self.design_path[0:-4] + ".pdf",)
         except Exception as e:
             print("Exception from preview_pdf", e)
 
         os.startfile('destination.pdf')
         
-        
+
+
+
 app = QApplication(sys.argv)
 
 GUI = Window()

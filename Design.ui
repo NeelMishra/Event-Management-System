@@ -52,19 +52,21 @@
           <property name="rightMargin">
            <number>0</number>
           </property>
-          <item row="0" column="5">
-           <widget class="QLabel" name="excel_signal">
+          <item row="0" column="4">
+           <widget class="QLabel" name="label_5">
             <property name="minimumSize">
              <size>
-              <width>20</width>
+              <width>0</width>
               <height>0</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true"/>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="text">
-             <string/>
+             <string>Excel :</string>
             </property>
            </widget>
           </item>
@@ -84,77 +86,21 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="10">
-           <widget class="QLabel" name="label_6">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
+          <item row="0" column="5">
+           <widget class="QLabel" name="excel_signal">
+            <property name="minimumSize">
+             <size>
+              <width>20</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <property name="text">
-             <string>Fields :</string>
+             <string/>
             </property>
            </widget>
-          </item>
-          <item row="0" column="7">
-           <widget class="QLabel" name="label">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Fonts :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="9">
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>100</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="6">
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>100</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="3">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>100</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
           <item row="0" column="2">
            <widget class="QLabel" name="design_signal">
@@ -178,24 +124,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="4">
-           <widget class="QLabel" name="label_5">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Excel :</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_2">
             <property name="minimumSize">
@@ -211,6 +139,18 @@
             </property>
             <property name="text">
              <string>Design :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Fonts :</string>
             </property>
            </widget>
           </item>
@@ -230,23 +170,39 @@
             </property>
            </spacer>
           </item>
+          <item row="0" column="6">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>50</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>50</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="fields_signal">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
@@ -256,7 +212,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+         <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -358,10 +314,7 @@
    <addaction name="separator"/>
    <addaction name="add_excel_button"/>
    <addaction name="separator"/>
-   <addaction name="separator"/>
    <addaction name="setting_button"/>
-   <addaction name="separator"/>
-   <addaction name="preview_certificate_button"/>
    <addaction name="separator"/>
    <addaction name="generate_pdf_button"/>
    <addaction name="separator"/>

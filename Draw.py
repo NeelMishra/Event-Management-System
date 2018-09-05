@@ -13,7 +13,7 @@ def paint(canvas, location , size, font, text):
         pdfmetrics.registerFont(TTFont(font, font + ".ttf"))
         canvas.setFont(font, int(size))
         canvas.drawString(int(location[0]),int(location[1]), text)
-        canvas.showPage()
+        canvas.showPage() #New page
     except Exception as e:
         print("Exception from paint" , e)
 
@@ -39,31 +39,62 @@ def pdf(fields, pdf_name):#,progress):
     #Itreative section, Here is where the magic occurs, abstractly.
 
     i = 0
+    length = (len(fields[list(fields.keys())[0]]['content']))
+    while(i != length):
 
-    for heading in fields:
+        for heading in fields:
 
+            n_loc = fields[heading]['coordinates']
+            n_size = fields[heading]['font_size']
+            n_font = fields[heading]['font_family']
+            n_color = fields[heading]['font_color']      
+            location = n_loc
+
+            if (n_loc == None):
+                continue
+            if (fields[heading]['content'] == None):
+                continue
+
+            else:
+                #draw[i]
+                pdfmetrics.registerFont(TTFont(n_font, n_font + ".ttf"))
+                can.setFont(n_font, int(n_size))
+                can.drawString(int(location[0]),int(location[1]),
+                               fields[heading]['content'][i])
         
-        n_loc = fields[heading]['coordinates']
-        if(n_loc == None):
-            continue
-        n_size = fields[heading]['font_size']
-        n_font = fields[heading]['font_family']
-        n_color = fields[heading]['font_color']
-
         i += 1
-        #RATIO = i / total_length
-        #print(i)
-        ##print(total_length)
-        ##print(RATIO)
-
-        for value in fields[heading]['content']:
-            print(value)
-            paint(can, n_loc, n_size, n_font, value) #Print names
+        can.showPage()
 
 
-        #progress.show()
-        #progress.setValue(int(RATIO * 100))
-    
+
+
+
+
+
+##    for heading in fields:
+##
+##        
+##        n_loc = fields[heading]['coordinates']
+##        if(n_loc == None):
+##            continue
+##        n_size = fields[heading]['font_size']
+##        n_font = fields[heading]['font_family']
+##        n_color = fields[heading]['font_color']
+##
+##        i += 1
+##        #RATIO = i / total_length
+##        #print(i)
+##        ##print(total_length)
+##        ##print(RATIO)
+##
+##        for value in fields[heading]['content']:
+##            print(value)
+##            paint(can, n_loc, n_size, n_font, value) #Print names
+##
+##
+##        #progress.show()
+##        #progress.setValue(int(RATIO * 100))
+##    
 
 #progress.hide()
 #Itreative portion ends
