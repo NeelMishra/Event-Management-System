@@ -17,7 +17,7 @@ def paint(canvas, location , size, font, text):
     except Exception as e:
         print("Exception from paint" , e)
 
-def pdf(fields, pdf_name):#,progress):
+def pdf(progress, fields, pdf_name):#,progress):
 ##    text = text[1:]
 ##    total_length = len(text)
 ##    print(total_length)
@@ -40,8 +40,9 @@ def pdf(fields, pdf_name):#,progress):
 
     i = 0
     length = (len(fields[list(fields.keys())[0]]['content']))
+    j = 1
     while(i != length):
-
+        ratio = (j / length) * 100
         for heading in fields:
 
             n_loc = fields[heading]['coordinates']
@@ -63,9 +64,12 @@ def pdf(fields, pdf_name):#,progress):
                                fields[heading]['content'][i])
         
         i += 1
+        j += 1
+        progress.setValue(int(ratio))
+        progress.show()
         can.showPage()
 
-
+    progress.hide()
 
 
 

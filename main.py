@@ -187,6 +187,8 @@ class Window(QMainWindow):
 
         try:
             self.image_ratio = [b/a for b,a in zip([2664, 1896],self.current_image_size)]
+
+            print("Executed")
             convert(self.design_path)
             self.design_signal.setPixmap(self.green_pix_map)
         except Exception as e:
@@ -223,7 +225,7 @@ class Window(QMainWindow):
             
         try:
             convert(self.design_path)
-            pdf(self.fields,self.design_path[0:-4] + ".pdf",)# self.progress)
+            pdf(self.progress, self.fields,self.design_path[0:-4] + ".pdf",)# self.progress)
         except Exception as e:
             print("Exception from generate_pdf", e)
 
