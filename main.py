@@ -38,7 +38,7 @@ class FontBox(QDialog):
             dictionary[flag[0]]['font_color'] = (r,g,b)
             dictionary[flag[0]]['font_family'] = self.font.currentText()
             
-            parent.font_signal.setPixmap(parent.green_pix_map)
+#            parent.font_signal.setPixmap(parent.green_pix_map)
             print(flag)
             self.close()
 
@@ -89,13 +89,13 @@ class Window(QMainWindow):
 
 
         
-        self.red_pix_map = QPixmap("Icons/red.jpg")
-        self.green_pix_map = QPixmap("Icons/green.jpg")
-        print(self.green_pix_map)
-        self.design_signal.setPixmap(self.red_pix_map)
+#        self.red_pix_map = QPixmap("Icons/red_icon.jpg")
+#        self.green_pix_map = QPixmap("Icons/green_icon.jpg")
+#        print(self.green_pix_map)
+#        self.design_signal.setPixmap(self.red_pix_map)
         #self.design_signal.setPixmap(self.green_pix_map)
-        self.excel_signal.setPixmap(self.red_pix_map)
-        self.font_signal.setPixmap(self.red_pix_map)
+#        self.excel_signal.setPixmap(self.red_pix_map)
+#        self.font_signal.setPixmap(self.red_pix_map)
         #self.fields_signal.setPixmap(self.red_pix_map)
 
 
@@ -110,7 +110,7 @@ class Window(QMainWindow):
 
 
     def dropdown(self):
-        self.font_signal.setPixmap(self.red_pix_map)
+#        self.font_signal.setPixmap(self.red_pix_map)
         try:
             if(len(self.fields) == 0):
                 from PyQt5.QtWidgets import QMessageBox
@@ -141,7 +141,7 @@ class Window(QMainWindow):
 
 
     def excel_file_browse(self):
-        self.excel_signal.setPixmap(self.red_pix_map)
+#        self.excel_signal.setPixmap(self.red_pix_map)
         try:
             self.excel_path, _ = QFileDialog.getOpenFileName(self, 'Select excel path')
 
@@ -166,14 +166,14 @@ class Window(QMainWindow):
                 i += 1
                 
             self.flag = [list(self.fields.keys())[0]]
-            self.excel_signal.setPixmap(self.green_pix_map)
+#            self.excel_signal.setPixmap(self.green_pix_map)
         except Exception as e:
             print("Exception from excel_file_browse", e)
             
 
 
     def design_path_browse(self):
-        self.design_signal.setPixmap(self.red_pix_map)
+#        self.design_signal.setPixmap(self.red_pix_map)
         self.design_path, _ = QFileDialog.getOpenFileName(self, 'Select certificate design.')
 
         if(self.design_path == None):
@@ -190,7 +190,7 @@ class Window(QMainWindow):
 
             print("Executed")
             convert(self.design_path)
-            self.design_signal.setPixmap(self.green_pix_map)
+#            self.design_signal.setPixmap(self.green_pix_map)
         except Exception as e:
             print("Exception from design_path_browse", e)
         
